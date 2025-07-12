@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jason Kautz - Assistant Professor</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6f8;
+      color: #333;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #818B7E;
+      padding: 1rem 2rem;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar .name {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+    }
+
+    .navbar .name a {
+       color: white;
+       text-decoration: none;
+    }
+
+    .navbar .name a:hover {
+      text-decoration: underline;
+    }
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    /* Section containers */
+    .section {
+      width: 100%;
+      padding: 3rem 0;
+    }
+
+    /* Inner wrapper to center and constrain content */
+    .section-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Updated Profile Section */
+    .profile-section {
+      width: 100%;
+      background: #818B7E;
+      color: white;
+      padding: 3rem 0;
+    }
+
+    /* Inner content for Profile */
+    .profile-content {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      overflow: hidden;
+    }
+
+    .left {
+      flex: 1 1 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .left img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .right {
+      flex: 2 1 400px;
+      padding: 2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .right h1 {
+      margin: 0;
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    hr {
+      margin: 1rem 0 1.5rem;
+      border: none;
+      border-top: 2px solid #FFFFFF;
+      width: 210px;
+    }
+
+    .title {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: flex-start;
+      gap: 1.5rem;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: white;
+      border-radius: 50%;
+      text-decoration: none;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background-color: #e0e0e0;
+    }
+
+    .social-links img {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Section Headers */
+    .section h2 {
+      font-size: 2rem;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .columns-container {
+      display: flex;
+      gap: 2rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .column-item {
+      flex: 1 1 calc(33.333% - 1.33rem);
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .column-item img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      object-fit: cover;
+    }
+
+    /* About Section Image Styling */
+    #about img {
+      max-width: 300px;
+      width: 100%;
+      float: right;
+      margin: 0 1.5rem 1rem 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    #about .section-content {
+      overflow: auto;  /* this makes the container wrap the floated image */
+    }
+
+    /* Contact section layout with image left and text right */
+    #contact {
+      background-color: #818B7E;
+      color: #F5F5F5;
+      padding: 3rem 0;
+    }
+
+    #contact h2 {
+      max-width: 1000px;
+      margin: 0 auto 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    #contact .contact-container {
+      display: flex;
+      align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    #contact .contact-container img {
+      width: 300px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      flex-shrink: 0;
+    }
+
+    #contact .contact-text {
+      flex: 1 1 300px;
+      min-width: 250px;
+      padding-left: 1rem;
+    }
+
+    /* About Section text color */
+    #about,
+    #about p {
+      color: #F5F5F5;
+    }
+
+    /* Make all links in all sections match text color */
+    .section a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .section a:hover,
+    .section a:focus {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .navbar .nav-links {
+        margin-top: 0.5rem;
+      }
+      .profile-content {
+        flex-direction: column;
+      }
+      .left, .right {
+        width: 100%;
+        text-align: center;
+      }
+      hr {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #about img {
+        float: none;
+        display: block;
+        margin: 0 auto 1rem auto;
+      }
+      #contact .contact-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      #contact .contact-text {
+        text-align: center;
+        padding-left: 0;
+      }
+      #contact .contact-container img {
+        width: 80%;
+        max-width: 300px;
+        margin-bottom: 1rem;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .column-item {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="name"><a href="#profile">Jason Kautz</a></div>
+    <div class="nav-links">
+      <a href="#publications">Selected Publications</a>
+      <a href="#work">Work in Progress</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Profile Section -->
+  <section class="profile-section" id="profile">
+    <div class="profile-content">
+      <div class="left">
+        <img src="photo_headshot.jpg" alt="Jason Kautz Headshot" />
+      </div>
+      <div class="right">
+        <h1>Jason Kautz</h1>
+        <hr />
+        <div class="title">Assistant Professor of Organization Behavior and Human Resource Management</div>
+        <div class="social-links">
+          <a href="mailto:jdkautz4@gmail.com" title="Email">
+            <img src="envelope.png" alt="Email" />
+          </a>
+          <a href="https://www.linkedin.com/in/jason-kautz-04942149/" target="_blank" title="LinkedIn">
+            <img src="linked_in.png" alt="LinkedIn" />
+          </a>
+          <a href="https://scholar.google.com/citations?user=QBcj8sAAAAAJ&hl=en&oi=ao" target="_blank" title="Google Scholar">
+            <img src="g_scholar.png" alt="Google Scholar" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Selected Publications -->
+  <section class="section" id="publications" style="background-color: #F5F5F5;">
+    <div class="section-content">
+      <h2>Selected Publications</h2>
+      <div class="columns-container">
+        <div class="column-item">
+          <img src="photo_pub_soldiersupport.jpg" alt="Publication 1" />
+          <h3>Interactive Effects of Genetic Liability and Combat Exposure on Risk of Alcohol Use Disorder Among US Service Members</h3>
+	  <p><em>Drug and Alcohol Dependence</em></p>
+          <p>Integrating information on genetic predisposition for alcohol use disorder (i.e., polygenic risk scores) with information on service members history and combat exposure, we found that the effect of combat exposure on problematic alcohol consumption varies in part due to the influence of genetic vulnerability. This work exemplifies the importance of understanding “Environment X Genetic” effects and provides a framework to help enhance preventative efforts by enabling more precise targeting of aid to soldiers.</p>
+          <a href="https://doi.org/10.1016/j.drugalcdep.2024.112459">Read More -></a>
+        </div>
+        <div class="column-item">
+          <img src="pub2.jpg" alt="Publication 2" />
+          <p><strong>A person-centered approach to behaving badly at work: An examination of workplace deviance patterns</strong></p>
+	  <p><em>Journal of Applied Psychology</em></p>
+          <p>SUMMARY</p>
+          <a href="https://doi.org/10.1037/apl0001192">Read More -></a>
+        </div>
+        <div class="column-item">
+          <img src="pub2.jpg" alt="Publication 2" />
+          <h3>Caring for Their Own: How Firm Actions to Protect Essential Workers and CEO Benevolence Influenced Stakeholder Sentiment During the COVID-19 Pandemic</h3>
+	  <p><em>Journal of Applied Psychology</em></p>
+          <p>At the onset of the COVID-19 pandemic, firms varied considerably in the degree to which they took action to protect their employees’ safety and financial well-being, and stakeholders took notice. In this study, we examined how firm leadership – in the form of action and perceptions of benevolence – helped shape stakeholder sentiment. Our longitudinal analysis of positive stakeholder sentiment expressed on social media demonstrated the importance of immediate firm action. Specifically, firm compensation actions were associated with a growth in positive sentiment, particularly when made by CEOs with high benevolence, whereas firm safety actions led to growth in positive sentiment but only when made by CEOs with low benevolence.</p>
+          <a href="https://doi.org/10.1037/apl0000928">Read More -></a>
+        </div>
+        <div class="column-item">
+          <img src="pub3.jpg" alt="Publication 3" />
+          <h3>Reflecting on Death Amidst COVID-19 and Individual Creativity</h3>
+	  <p><em>Journal of Applied Psychology</em></p>
+          <p>Death awareness was a very real experience during the initial peak of the COVID-19 pandemic, and it brought unexpected consequences. Our research found that reflecting on death motivated individuals to engage in more creative thinking in their daily work, and this was explained in part by an increased sense of self-transcendence.</p>
+          <a href="https://doi.org/10.1177/01492063231154523">Read More -></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work In Progress -->
+  <section class="section" id="work" style="background-color: #EAE6E1;">
+    <div class="section-content">
+      <h2>Work In Progress</h2>
+      <div class="columns-container">
+        <div class="column-item">
+          <h3>[TITLE REDACTED]</h3>
+          <p>This is a scale development paper. The titel is redacted and the description is reduced to perserve the blind review process. Leveraging 7 independent samples, this manuscript presents the test of psychometric validity of our scale.</p>
+	  <p>2nd Round R&R at: <em>Journal of Applied Psychology</em></p>
+        </div>
+        <div class="column-item">
+          <h3>Trust Momentum: A new understanding of dynamic trust</h3>
+          <p>SUMMARY.</p>
+	  <p>Finalizing for: <em>Academy of Management Journal</em></p>
+        </div>
+        <div class="column-item">
+          <h3>The importance of first impressions and events that change them: How does trust anchor and change over time</h3>
+          <p>SUMMARY</p>
+	  <p>Finalizing for: <em>Academy of Management Journal</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section" id="about" style="background-color: #A74D4A;">
+    <div class="section-content">
+      <h2>About Jason Kautz</h2>
+      <img src="photo_relaxing.jpg" alt="Jason Kautz Research" />
+      <p>Jason Kautz is an Assistant Professor in the Department of Management and Human Resources at the University of Arizona’s Eller College of Management. His research is centered on workplace experiences and behaviors, especially among military veterans and diverse employees. He applies innovative methodologies and collaborates across disciplines to better understand employee outcomes and workplace dynamics.</p>
+      <p>Jason’s recent work includes the integration of genetic data with organizational behavior models to uncover complex interactions influencing risk behaviors. He also investigates the role of leadership and firm practices in shaping stakeholder perceptions during crises like the COVID-19 pandemic.</p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section" id="contact" style="background-color: #818B7E">
+    <h2>Contact</h2>
+    <div class="contact-container">
+      <img src="photo_laptop.jpg" alt="Jason Kautz Contact" />
+      <div class="contact-text">
+	<p style="font-size: 2rem; font-weight: 700; text-align: center">Let's Connect!</p>
+        <p style="text-align: center">Email: <a href="mailto:jdkautz4@gmail.com">jdkautz4@gmail.com</a></p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
