@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Your Name
+title: Jason Kautz
 ---
 
-# 👋 Hi, I'm Your Name
+# 👋 Hi, I'm Jason
 
 Welcome to my professional website.
 
