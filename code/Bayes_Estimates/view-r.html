@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>R Code Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+      color: #333;
+    }
+    .wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin: 0;
+    }
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      background: #818B7E;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.5rem 0.85rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .btn:hover { filter: brightness(0.95); }
+
+    pre {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 1rem 1.25rem;
+      overflow: auto;
+      white-space: pre;
+      line-height: 1.45;
+      tab-size: 2;
+    }
+
+    .note {
+      font-size: 0.95rem;
+      color: #555;
+      margin: 0.5rem 0 1rem;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"
+          data-prismjs-autoloader-path="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/"></script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>DGM R Code Viewer</h1>
+      <div class="actions">
+        <a class="btn" id="downloadBtn" href="Emper_Bayes_Code.R" download>Download .R file</a>
+        <a class="btn" href="/">Back to site</a>
+      </div>
+    </header>
+
+    <p class="note">This page displays the contents of the R script below. You can also download the file.</p>
+
+    <pre><code class="language-r" id="codeBlock">Loading R code…</code></pre>
+  </div>
+
+  <script>
+    // The file lives in the same folder as this HTML file
+    const R_FILE_PATH = 'Emper_Bayes_Code.R';
+    const codeEl = document.getElementById('codeBlock');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    downloadBtn.href = R_FILE_PATH;
+
+    fetch(R_FILE_PATH, { cache: 'no-cache' })
+      .then(resp => {
+        if (!resp.ok) throw new Error('File not found.');
+        return resp.text();
+      })
+      .then(text => {
+        codeEl.textContent = text;
+        if (window.Prism && window.Prism.highlightElement) {
+          Prism.highlightElement(codeEl);
+        }
+      })
+      .catch(err => {
+        codeEl.textContent = 'Unable to load the R file. Please check the path/name.\n\n' + err;
+      });
+  </script>
+</body>
+</html>
