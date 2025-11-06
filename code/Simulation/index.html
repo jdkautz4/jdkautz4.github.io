@@ -2,162 +2,124 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Food-Delivery Platform Strategy Simulation</title>
+  <title>Platform Strategy Simulation</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    table { border-collapse: collapse; width: 100%; }
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
     th { background: #eee; }
-    input[type="number"] { width: 60px; }
+    input[type="number"] { width: 70px; }
+    select { width: 150px; }
+    .button { margin-top: 10px; padding: 6px 12px; }
   </style>
 </head>
 <body>
 
-  <h1>Platform Strategy & Network Effects Simulation</h1>
-  <p>Four groups run platforms. Each round, choose a strategy + subscription price. Click “Run Round” to see results.</p>
+  <h1>Food-Delivery Platform Simulation</h1>
+  <p>4 Groups. Each round: pick **Strategy** + **Price**, then click **Run Round**.</p>
 
-  <div>
-    <label>Number of rounds: <input id="numRounds" type="number" value="5" min="1" /></label>
-    <button onclick="initialize()">Initialize Simulation</button>
-  </div>
+  <table id="simTable">
+    <thead>
+      <tr>
+        <th>Round</th>
+        <th>Strategy</th>
+        <th>Price</th>
+        <th>Cust Start</th>
+        <th>Cust End</th>
+        <th>Profit</th>
+        <th>Cumul Profit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rows will be created by JS -->
+    </tbody>
+  </table>
 
-  <div id="simulationArea"></div>
+  <button class="button" onclick="initialize()">Start / Reset</button>
 
   <script>
-    // Parameters
     const strategies = [
       { name: "Do Nothing", delta: 0.00, multiplier: 1.0 },
       { name: "Discount", delta: 0.05, multiplier: 0.8 },
-      { name: "Exclusive Restaurant Deal", delta: 0.08, multiplier: 1.1 },
+      { name: "Exclusive Deal", delta: 0.08, multiplier: 1.1 },
       { name: "Driver Subsidies", delta: 0.10, multiplier: 0.7 },
       { name: "Bundle Offer", delta: 0.06, multiplier: 1.0 },
       { name: "Loyalty Perks", delta: 0.04, multiplier: 1.2 }
     ];
-    const baseMarketSize = 10000;
-    const growthRate = 0.20;       // 20% growth each round
-    const networkThreshold = 5000;
-    const networkBonusRate = 0.10; // 10% extra growth once threshold crossed
 
-    let currentRound = 0;
-    let marketSizes = [];
-    let platforms = [];  // one per group
+    const baseMarket = 10000;
+    const growth = 0.20;
+    const threshold = 5000;
+    const bonus = 0.10;
+
+    let roundNum = 0;
+    let marketSize = baseMarket;
+    let groups = [];
 
     function initialize() {
-      const numRounds = parseInt(document.getElementById("numRounds").value) || 5;
-      currentRound = 0;
-      marketSizes = [];
-      platforms = [];
-      for (let g = 0; g < 4; g++) {
-        platforms.push({
-          name: "Group " + String.fromCharCode(65 + g),
-          customers: 0,
-          cumulProfit: 0
-        });
+      roundNum = 0;
+      marketSize = baseMarket;
+      groups = [];
+      for (let i=0; i<4; i++){
+        groups.push({ name: "Group "+String.fromCharCode(65+i), customers:0, cumulProfit:0 });
       }
-      // setup initial market size
-      marketSizes[0] = baseMarketSize;
-      renderSimulationTable(numRounds);
+      const tbody = document.querySelector("#simTable tbody");
+      tbody.innerHTML = "";
+      for (let r=1; r<=5; r++){
+        const row = document.createElement("tr");
+        row.dataset.round = r;
+        row.innerHTML = `
+          <td>${r}</td>
+          <td><select>${ strategies.map((s,i)=>`<option value="${i}">${s.name}</option>`).join('') }</select></td>
+          <td><input type="number" value="5" min="0"/></td>
+          <td>–</td><td>–</td><td>–</td><td>–</td>
+        `;
+        tbody.appendChild(row);
+      }
+      document.querySelector(".button").textContent = "Run Round 1";
     }
 
-    function renderSimulationTable(numRounds) {
-      const container = document.getElementById("simulationArea");
-      container.innerHTML = "";
-      const tbl = document.createElement("table");
-      const header = tbl.insertRow();
-      const cols = ["Round","Market Size","Net-Effect Multiplier"];
-      for (let g = 0; g < platforms.length; g++) {
-        cols.push(platforms[g].name + " Strategy","Price","Cust Start","Cust End","Profit","Cumul Profit");
-      }
-      cols.push("Run Round");
-      cols.forEach(c => {
-        const th = document.createElement("th");
-        th.textContent = c;
-        header.appendChild(th);
-      });
+    function runNext() {
+      roundNum++;
+      if (roundNum > groups.length) return;
+      marketSize = marketSize * (1 + growth);
+      const largest = Math.max(...groups.map(g=>g.customers));
+      const netMult = (largest > threshold) ? (1 + bonus) : 1;
 
-      for (let r = 1; r <= numRounds; r++) {
-        const row = tbl.insertRow();
-        row.id = "roundRow" + r;
-        // Market size cell
-        const cellMarket = row.insertCell();
-        cellMarket.textContent = "";
-        // Net-Effect Multiplier cell
-        row.insertCell().textContent = "";
-        for (let g = 0; g < platforms.length; g++) {
-          // Strategy select
-          const strategyCell = row.insertCell();
-          const sel = document.createElement("select");
-          strategies.forEach((s, idx) => {
-            const opt = document.createElement("option");
-            opt.value = idx;
-            opt.textContent = s.name;
-            sel.appendChild(opt);
-          });
-          strategyCell.appendChild(sel);
-          // Price input
-          const priceCell = row.insertCell();
-          const inp = document.createElement("input");
-          inp.type = "number";
-          inp.min = "0";
-          inp.value = "5";
-          priceCell.appendChild(inp);
+      const tbody = document.querySelector("#simTable tbody");
+      const row = tbody.querySelector(`tr[data-round="${roundNum}"]`);
+      const sel = row.querySelector("select");
+      const priceInput = row.querySelector("input");
+      const strat = strategies[sel.value];
+      const price = parseFloat(priceInput.value);
 
-          // Cust Start
-          row.insertCell().textContent = "";
-          // Cust End
-          row.insertCell().textContent = "";
-          // Profit
-          row.insertCell().textContent = "";
-          // Cumul Profit
-          row.insertCell().textContent = "";
-        }
-        // Run button
-        const runCell = row.insertCell();
-        const btn = document.createElement("button");
-        btn.textContent = "Run";
-        btn.onclick = () => runRound(r, numRounds);
-        runCell.appendChild(btn);
-      }
+      const g = groups[roundNum-1];
+      const custStart = g.customers;
+      const custEnd = Math.round(custStart * (1 + strat.delta) * netMult + (marketSize * strat.delta));
+      const profit = Math.round(custEnd * price * strat.multiplier);
+      g.customers = custEnd;
+      g.cumulProfit += profit;
 
-      container.appendChild(tbl);
-    }
+      row.cells[3].textContent = custStart;
+      row.cells[4].textContent = custEnd;
+      row.cells[5].textContent = "$"+profit;
+      row.cells[6].textContent = "$"+g.cumulProfit;
 
-    function runRound(r, totalRounds) {
-      if (r === 1) {
-        marketSizes[1] = marketSizes[0] * (1 + growthRate);
+      if (roundNum < 5) {
+        document.querySelector(".button").textContent = "Run Round " + (roundNum+1);
       } else {
-        marketSizes[r] = marketSizes[r-1] * (1 + growthRate);
-      }
-
-      const row = document.getElementById("roundRow" + r);
-      // Market size
-      row.cells[1].textContent = Math.round(marketSizes[r]);
-      // Compute net-effect multiplier (simple logic: if largest platform has > threshold)
-      const largestCust = Math.max(...platforms.map(p => p.customers));
-      let netMult = 1;
-      if (largestCust > networkThreshold) {
-        netMult += networkBonusRate;
-      }
-      row.cells[2].textContent = netMult.toFixed(2);
-
-      // For each group
-      for (let g = 0; g < platforms.length; g++) {
-        const baseIdx = 3 + g*6;
-        const sel = row.cells[baseIdx].firstChild;
-        const strategy = strategies[parseInt(sel.value)];
-        const price = parseFloat(row.cells[baseIdx+1].firstChild.value);
-        const custStart = platforms[g].customers;
-        const custEnd = Math.round(custStart * (1 + strategy.delta) * netMult + (marketSizes[r] * strategy.delta) );
-        const profit = custEnd * price * strategy.multiplier;
-        platforms[g].customers = custEnd;
-        platforms[g].cumulProfit += profit;
-        // update cells
-        row.cells[baseIdx+2].textContent = custStart;
-        row.cells[baseIdx+3].textContent = custEnd;
-        row.cells[baseIdx+4].textContent = "$" + profit.toFixed(0);
-        row.cells[baseIdx+5].textContent = "$" + platforms[g].cumulProfit.toFixed(0);
+        document.querySelector(".button").textContent = "Finished";
+        document.querySelector(".button").disabled = true;
       }
     }
+
+    document.querySelector(".button").addEventListener("click", () => {
+      if (roundNum === 0 || roundNum < 5) {
+        runNext();
+      }
+    });
+
+    initialize();
   </script>
 
 </body>
