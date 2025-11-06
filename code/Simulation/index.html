@@ -13,17 +13,20 @@
     .button { margin-top: 10px; padding: 8px 16px; font-size: 16px; }
     .hidden { display: none; }
     #inputSection, #prevResultsSection { margin-top: 30px; }
+    #marketDisplay { margin-top: 20px; font-size: 18px; font-weight: bold; }
   </style>
 </head>
 <body>
 
   <h1>Food-Delivery Platform Simulation</h1>
-  <p>4 groups run platforms. Each round: pick a <strong>Strategy</strong> + <strong>Price</strong>. The overall market grows, the groups compete for slices of the market, and large groups have a “leader effect”. You’ll see the outcome from the previous round while making your next choice.</p>
+  <p>4 groups run platforms. Each round: pick a <strong>Strategy</strong> + <strong>Price</strong>. The total market grows each round, groups compete for slices, and larger groups benefit from a “leader effect”.</p>
 
   <div>
     <label>Number of rounds: <input id="numRounds" type="number" value="5" min="1" /></label>
     <button type="button" class="button" onclick="initialize()">Start / Reset</button>
   </div>
+
+  <div id="marketDisplay">Market Size: <span id="marketSizeValue">0</span></div>
 
   <!-- Previous Round Results Section -->
   <div id="prevResultsSection" class="hidden">
@@ -39,12 +42,12 @@
         </tr>
       </thead>
       <tbody>
-        <!-- JS will populate -->
+        <!-- populated by JS -->
       </tbody>
     </table>
   </div>
 
-  <!-- Input Section: Strategy & Price for next round -->
+  <!-- Input Section -->
   <div id="inputSection">
     <h2>Round <span id="roundLabelInput">1</span>: Enter Strategy & Price</h2>
     <table id="inputTable">
@@ -56,7 +59,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Populated by JS -->
+        <!-- populated by JS -->
       </tbody>
     </table>
     <button type="button" class="button" onclick="submitChoices()">Submit & Run Round</button>
@@ -88,15 +91,16 @@
       numRounds = parseInt(document.getElementById("numRounds").value, 10) || 5;
       groups = [];
       for (let i = 0; i < 4; i++) {
-        groups.push({
-          name: "Group " + String.fromCharCode(65 + i),
-          customers: 0,
-          cumulProfit: 0
-        });
+        groups.push({ name: "Group " + String.fromCharCode(65 + i), customers: 0, cumulProfit: 0 });
       }
       document.getElementById("prevResultsSection").classList.add("hidden");
+      updateMarketDisplay();
       buildInputTable();
       updateRoundLabels();
+    }
+
+    function updateMarketDisplay() {
+      document.getElementById("marketSizeValue").textContent = marketSize.toLocaleString();
     }
 
     function buildInputTable() {
@@ -106,7 +110,7 @@
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${g.name}</td>
-          <td><select>${ strategies.map((s, i) => `<option value="${i}">${s.name}</option>`).join('') }</select></td>
+          <td><select>${ strategies.map((s,i)=>`<option value="${i}">${s.name}</option>`).join('') }</select></td>
           <td><input type="number" value="5" min="0"/></td>
         `;
         tbody.appendChild(row);
@@ -125,22 +129,23 @@
       }
 
       roundNum++;
-      marketSize *= (1 + growthRate);
+      marketSize = marketSize * (1 + growthRate);
+      updateMarketDisplay();
 
       const largestCust = Math.max(...groups.map(g => g.customers));
-      const netMult = largestCust > networkThreshold ? (1 + networkBonusRate) : 1;
+      const netMult = (largestCust > networkThreshold ? (1 + networkBonusRate) : 1);
 
       const inputTbody = document.querySelector("#inputTable tbody");
       const prevTbody = document.querySelector("#prevResultTable tbody");
       prevTbody.innerHTML = "";
 
-      // Compute attractiveness
+      // Compute attractions for leader effect
       let totalAttraction = 0;
       const attract = groups.map((g, idx) => {
         const rowIn = inputTbody.rows[idx];
         const strat = strategies[ parseInt(rowIn.cells[1].querySelector("select").value, 10) ];
         const leaderTerm = Math.pow((g.customers || 1), leaderEffectExponent);
-        const a = (strat.delta + 0.01) * leaderTerm; // small base so zero delta still attracts
+        const a = (strat.delta + 0.01) * leaderTerm;
         totalAttraction += a;
         return a;
       });
