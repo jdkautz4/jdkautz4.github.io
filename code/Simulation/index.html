@@ -11,21 +11,20 @@
     input[type="number"] { width: 70px; }
     select { width: 150px; }
     .button { margin-top: 10px; padding: 8px 16px; font-size: 16px; }
-    .hidden { display: none; }
-    #inputSection, #tableSection { margin-top: 30px; }
+    #inputSection, #resultSection { margin-top: 30px; }
   </style>
 </head>
 <body>
 
   <h1>Food-Delivery Platform Simulation</h1>
-  <p>4 groups run platforms. Each round: students choose a <strong>Strategy</strong> + <strong>Price</strong>, then click <strong>Run Round</strong>. The previous round’s results stay visible while you make the new choices.</p>
+  <p>4 groups run platforms. Each round: choose <strong>Strategy</strong> + <strong>Price</strong>, then see only that round’s results, then select next round.</p>
 
   <div>
     <label>Number of rounds: <input id="numRounds" type="number" value="5" min="1" /></label>
     <button class="button" onclick="initialize()">Start / Reset</button>
   </div>
 
-  <!-- Section for input of next round -->
+  <!-- Input Section -->
   <div id="inputSection">
     <h2>Round <span id="roundLabelInput">1</span>: Enter Strategy & Price</h2>
     <table id="inputTable">
@@ -37,19 +36,18 @@
         </tr>
       </thead>
       <tbody>
-        <!-- JS will fill -->
+        <!-- JS populates rows -->
       </tbody>
     </table>
     <button class="button" onclick="submitChoices()">Submit & Run Round</button>
   </div>
 
-  <!-- Section for results (accumulates) -->
-  <div id="tableSection">
-    <h2>Results so far</h2>
+  <!-- Result Section -->
+  <div id="resultSection" class="hidden">
+    <h2>Round <span id="roundLabelResult">1</span>: Results</h2>
     <table id="resultTable">
       <thead>
         <tr>
-          <th>Round #</th>
           <th>Group</th>
           <th>Cust Start</th>
           <th>Cust End</th>
@@ -58,9 +56,10 @@
         </tr>
       </thead>
       <tbody>
-        <!-- JS will append results each round -->
+        <!-- JS replaces rows each round -->
       </tbody>
     </table>
+    <button class="button" onclick="nextRound()">Next Round</button>
   </div>
 
   <script>
@@ -90,8 +89,7 @@
       for (let i = 0; i < 4; i++) {
         groups.push({ name: "Group " + String.fromCharCode(65 + i), customers: 0, cumulProfit: 0 });
       }
-      // Clear result table
-      document.querySelector("#resultTable tbody").innerHTML = "";
+      document.getElementById("resultSection").classList.add("hidden");
       buildInputTable();
       updateRoundLabel();
     }
@@ -114,30 +112,29 @@
 
     function updateRoundLabel() {
       document.getElementById("roundLabelInput").textContent = roundNum + 1;
+      document.getElementById("roundLabelResult").textContent = roundNum;
     }
 
     function submitChoices() {
       if (roundNum >= numRounds) {
-        alert("All rounds have been played.");
+        alert("All rounds done.");
         return;
       }
 
-      // Advance round
       roundNum++;
-      marketSize = marketSize * (1 + growthRate);
+      marketSize *= (1 + growthRate);
 
-      // compute network effect multiplier
       const largestCust = Math.max(...groups.map(g => g.customers));
       const netMult = (largestCust > networkThreshold) ? (1 + networkBonusRate) : 1;
 
-      // Read input table selections, compute results, display
       const tbodyInput = document.querySelector("#inputTable tbody");
       const tbodyResult = document.querySelector("#resultTable tbody");
+      tbodyResult.innerHTML = "";  // clear previous results
 
       groups.forEach((g, idx) => {
-        const rowInput = tbodyInput.rows[idx];
-        const sel = rowInput.cells[1].querySelector("select");
-        const priceInput = rowInput.cells[2].querySelector("input");
+        const rowIn = tbodyInput.rows[idx];
+        const sel = rowIn.cells[1].querySelector("select");
+        const priceInput = rowIn.cells[2].querySelector("input");
         const strat = strategies[parseInt(sel.value)];
         const price = parseFloat(priceInput.value) || 0;
 
@@ -150,7 +147,6 @@
 
         const rowRes = document.createElement("tr");
         rowRes.innerHTML = `
-          <td>${roundNum}</td>
           <td>${g.name}</td>
           <td>${custStart}</td>
           <td>${custEnd}</td>
@@ -160,14 +156,23 @@
         tbodyResult.appendChild(rowRes);
       });
 
-      if (roundNum < numRounds) {
-        buildInputTable();
-        updateRoundLabel();
-      } else {
-        document.getElementById("roundLabelInput").textContent = "Done";
-        alert("Simulation complete!");
-      }
+      document.getElementById("inputSection").classList.add("hidden");
+      document.getElementById("resultSection").classList.remove("hidden");
+      updateRoundLabel();
     }
+
+    function nextRound() {
+      if (roundNum >= numRounds) {
+        alert("Simulation complete!");
+        return;
+      }
+      document.getElementById("resultSection").classList.add("hidden");
+      document.getElementById("inputSection").classList.remove("hidden");
+      buildInputTable();
+      updateRoundLabel();
+    }
+
+    window.onload = initialize;
   </script>
 
 </body>
