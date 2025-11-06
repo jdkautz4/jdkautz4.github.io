@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <title>Platform Strategy Simulation</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 900px; }
     table { border-collapse: collapse; width: 100%; margin-top: 20px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
     th { background: #eee; }
-    input[type="number"] { width: 70px; }
+    input[type="number"] { width: 80px; }
     select { width: 160px; }
     .button { margin-top: 10px; padding: 8px 16px; font-size: 16px; }
     .hidden { display: none; }
@@ -18,7 +18,7 @@
 <body>
 
   <h1>Food-Delivery Platform Simulation</h1>
-  <p>4 groups run platforms. Each round: pick a <strong>Strategy</strong> + <strong>Price</strong>. Previous round’s results will remain visible while you decide.</p>
+  <p>4 groups run platforms. Each round: pick a <strong>Strategy</strong> + <strong>Price</strong>. The overall market grows, the groups compete for slices of the market, and large groups have a “leader effect”. You’ll see the outcome from the previous round while making your next choice.</p>
 
   <div>
     <label>Number of rounds: <input id="numRounds" type="number" value="5" min="1" /></label>
@@ -35,16 +35,16 @@
           <th>Cust Start</th>
           <th>Cust End</th>
           <th>Profit</th>
-          <th>Cumul Profit</th>
+          <th>Cumulative Profit</th>
         </tr>
       </thead>
       <tbody>
-        <!-- filled by JS -->
+        <!-- JS will populate -->
       </tbody>
     </table>
   </div>
 
-  <!-- Input Section -->
+  <!-- Input Section: Strategy & Price for next round -->
   <div id="inputSection">
     <h2>Round <span id="roundLabelInput">1</span>: Enter Strategy & Price</h2>
     <table id="inputTable">
@@ -56,7 +56,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- filled by JS -->
+        <!-- Populated by JS -->
       </tbody>
     </table>
     <button type="button" class="button" onclick="submitChoices()">Submit & Run Round</button>
@@ -75,6 +75,7 @@
     const growthRate = 0.20;
     const networkThreshold = 5000;
     const networkBonusRate = 0.10;
+    const leaderEffectExponent = 1.2;
 
     let roundNum = 0;
     let numRounds = 5;
@@ -93,7 +94,6 @@
           cumulProfit: 0
         });
       }
-      // Hide previous results section until after first round
       document.getElementById("prevResultsSection").classList.add("hidden");
       buildInputTable();
       updateRoundLabels();
@@ -107,7 +107,7 @@
         row.innerHTML = `
           <td>${g.name}</td>
           <td><select>${ strategies.map((s, i) => `<option value="${i}">${s.name}</option>`).join('') }</select></td>
-          <td><input type="number" value="5" min="0" /></td>
+          <td><input type="number" value="5" min="0"/></td>
         `;
         tbody.appendChild(row);
       });
@@ -125,25 +125,37 @@
       }
 
       roundNum++;
-      marketSize = marketSize * (1 + growthRate);
+      marketSize *= (1 + growthRate);
 
       const largestCust = Math.max(...groups.map(g => g.customers));
-      const netMult = (largestCust > networkThreshold ? (1 + networkBonusRate) : 1);
+      const netMult = largestCust > networkThreshold ? (1 + networkBonusRate) : 1;
 
       const inputTbody = document.querySelector("#inputTable tbody");
       const prevTbody = document.querySelector("#prevResultTable tbody");
-      prevTbody.innerHTML = "";   // clear previous
+      prevTbody.innerHTML = "";
+
+      // Compute attractiveness
+      let totalAttraction = 0;
+      const attract = groups.map((g, idx) => {
+        const rowIn = inputTbody.rows[idx];
+        const strat = strategies[ parseInt(rowIn.cells[1].querySelector("select").value, 10) ];
+        const leaderTerm = Math.pow((g.customers || 1), leaderEffectExponent);
+        const a = (strat.delta + 0.01) * leaderTerm; // small base so zero delta still attracts
+        totalAttraction += a;
+        return a;
+      });
 
       groups.forEach((g, idx) => {
-        const inputRow = inputTbody.rows[idx];
-        const sel = inputRow.cells[1].querySelector("select");
-        const priceInput = inputRow.cells[2].querySelector("input");
+        const rowIn = inputTbody.rows[idx];
+        const sel = rowIn.cells[1].querySelector("select");
+        const priceInput = rowIn.cells[2].querySelector("input");
         const strat = strategies[ parseInt(sel.value, 10) ];
         const price = parseFloat(priceInput.value) || 0;
 
         const custStart = g.customers;
-        const custEnd = Math.round(custStart * (1 + strat.delta) * netMult + (marketSize * strat.delta));
-        const profit = Math.round(custEnd * price * strat.multiplier);
+        const share = attract[idx] / totalAttraction;
+        const custEnd = Math.round( share * marketSize );
+        const profit = Math.round( custEnd * price * strat.multiplier );
 
         g.customers = custEnd;
         g.cumulProfit += profit;
@@ -159,21 +171,16 @@
         prevTbody.appendChild(rowRes);
       });
 
-      // Show previous results
       document.getElementById("prevResultsSection").classList.remove("hidden");
-      // Rebuild input for next round if any
+
       if (roundNum < numRounds) {
         buildInputTable();
-        document.getElementById("roundLabelInput").textContent = roundNum + 1;
+        updateRoundLabels();
       } else {
-        // If final round done, disable further input
         document.getElementById("inputSection").classList.add("hidden");
         alert("Simulation complete!");
       }
-      updateRoundLabels();
     }
-
-    window.onload = initialize;
   </script>
 
 </body>
