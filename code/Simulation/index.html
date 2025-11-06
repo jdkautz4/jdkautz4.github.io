@@ -9,20 +9,39 @@
     th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
     th { background: #eee; }
     input[type="number"] { width: 70px; }
-    select { width: 150px; }
+    select { width: 160px; }
     .button { margin-top: 10px; padding: 8px 16px; font-size: 16px; }
-    #inputSection, #resultSection { margin-top: 30px; }
     .hidden { display: none; }
+    #inputSection, #prevResultsSection { margin-top: 30px; }
   </style>
 </head>
 <body>
 
   <h1>Food-Delivery Platform Simulation</h1>
-  <p>4 groups run platforms. Each round: select a <strong>Strategy</strong> + <strong>Price</strong>, then click <strong>Submit & Run Round</strong>. You’ll see the results of that round, then continue.</p>
+  <p>4 groups run platforms. Each round: pick a <strong>Strategy</strong> + <strong>Price</strong>. Previous round’s results will remain visible while you decide.</p>
 
   <div>
     <label>Number of rounds: <input id="numRounds" type="number" value="5" min="1" /></label>
     <button type="button" class="button" onclick="initialize()">Start / Reset</button>
+  </div>
+
+  <!-- Previous Round Results Section -->
+  <div id="prevResultsSection" class="hidden">
+    <h2>Previous Round Results – Round <span id="roundLabelPrev">0</span></h2>
+    <table id="prevResultTable">
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>Cust Start</th>
+          <th>Cust End</th>
+          <th>Profit</th>
+          <th>Cumul Profit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- filled by JS -->
+      </tbody>
+    </table>
   </div>
 
   <!-- Input Section -->
@@ -37,30 +56,10 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Rows will be added here -->
+        <!-- filled by JS -->
       </tbody>
     </table>
     <button type="button" class="button" onclick="submitChoices()">Submit & Run Round</button>
-  </div>
-
-  <!-- Result Section -->
-  <div id="resultSection" class="hidden">
-    <h2>Round <span id="roundLabelResult">1</span>: Results</h2>
-    <table id="resultTable">
-      <thead>
-        <tr>
-          <th>Group</th>
-          <th>Customers Start</th>
-          <th>Customers End</th>
-          <th>Profit</th>
-          <th>Cumulative Profit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Results rows will appear here -->
-      </tbody>
-    </table>
-    <button type="button" class="button" onclick="nextRound()">Next Round</button>
   </div>
 
   <script>
@@ -88,9 +87,14 @@
       numRounds = parseInt(document.getElementById("numRounds").value, 10) || 5;
       groups = [];
       for (let i = 0; i < 4; i++) {
-        groups.push({ name: "Group " + String.fromCharCode(65 + i), customers: 0, cumulProfit: 0 });
+        groups.push({
+          name: "Group " + String.fromCharCode(65 + i),
+          customers: 0,
+          cumulProfit: 0
+        });
       }
-      document.getElementById("resultSection").classList.add("hidden");
+      // Hide previous results section until after first round
+      document.getElementById("prevResultsSection").classList.add("hidden");
       buildInputTable();
       updateRoundLabels();
     }
@@ -102,8 +106,8 @@
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${g.name}</td>
-          <td><select>${ strategies.map((s,i)=>`<option value="${i}">${s.name}</option>`).join('') }</select></td>
-          <td><input type="number" value="5" min="0"/></td>
+          <td><select>${ strategies.map((s, i) => `<option value="${i}">${s.name}</option>`).join('') }</select></td>
+          <td><input type="number" value="5" min="0" /></td>
         `;
         tbody.appendChild(row);
       });
@@ -111,7 +115,7 @@
 
     function updateRoundLabels() {
       document.getElementById("roundLabelInput").textContent = roundNum + 1;
-      document.getElementById("roundLabelResult").textContent = roundNum + 1;
+      document.getElementById("roundLabelPrev").textContent = roundNum;
     }
 
     function submitChoices() {
@@ -120,22 +124,21 @@
         return;
       }
 
-      // Advance to next round
       roundNum++;
-      marketSize *= (1 + growthRate);
+      marketSize = marketSize * (1 + growthRate);
 
       const largestCust = Math.max(...groups.map(g => g.customers));
-      const netMult = (largestCust > networkThreshold) ? (1 + networkBonusRate) : 1;
+      const netMult = (largestCust > networkThreshold ? (1 + networkBonusRate) : 1);
 
       const inputTbody = document.querySelector("#inputTable tbody");
-      const resultTbody = document.querySelector("#resultTable tbody");
-      resultTbody.innerHTML = "";
+      const prevTbody = document.querySelector("#prevResultTable tbody");
+      prevTbody.innerHTML = "";   // clear previous
 
       groups.forEach((g, idx) => {
         const inputRow = inputTbody.rows[idx];
         const sel = inputRow.cells[1].querySelector("select");
         const priceInput = inputRow.cells[2].querySelector("input");
-        const strat = strategies[parseInt(sel.value, 10)];
+        const strat = strategies[ parseInt(sel.value, 10) ];
         const price = parseFloat(priceInput.value) || 0;
 
         const custStart = g.customers;
@@ -153,22 +156,20 @@
           <td>$${profit.toLocaleString()}</td>
           <td>$${g.cumulProfit.toLocaleString()}</td>
         `;
-        resultTbody.appendChild(rowRes);
+        prevTbody.appendChild(rowRes);
       });
 
-      document.getElementById("inputSection").classList.add("hidden");
-      document.getElementById("resultSection").classList.remove("hidden");
-      updateRoundLabels();
-    }
-
-    function nextRound() {
-      if (roundNum >= numRounds) {
+      // Show previous results
+      document.getElementById("prevResultsSection").classList.remove("hidden");
+      // Rebuild input for next round if any
+      if (roundNum < numRounds) {
+        buildInputTable();
+        document.getElementById("roundLabelInput").textContent = roundNum + 1;
+      } else {
+        // If final round done, disable further input
+        document.getElementById("inputSection").classList.add("hidden");
         alert("Simulation complete!");
-        return;
       }
-      buildInputTable();
-      document.getElementById("resultSection").classList.add("hidden");
-      document.getElementById("inputSection").classList.remove("hidden");
       updateRoundLabels();
     }
 
