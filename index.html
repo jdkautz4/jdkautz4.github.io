@@ -1,556 +1,110 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jason Kautz - Assistant Professor</title>
+<article class="card">
+            <img src="Image_Death.png" alt="Illustration for death reflection and creativity publication" width="1536" height="1024" loading="lazy" />
+            <h3>Reflecting on Death Amidst COVID-19 and Individual Creativity</h3>
+            <p class="card-meta"><em>Journal of Applied Psychology</em></p>
+            <p>Death awareness was a very real experience during the initial peak of the COVID-19 pandemic, and it brought unexpected consequences. Using weekly panel data, we found that death reflection was positively linked to creativity, highlighting how certain types of reflection can lead to positive psychological and behavioral outcomes.</p>
+            <a class="card-link" href="https://doi.org/10.1037/apl0000949" target="_blank" rel="noopener noreferrer" aria-label="Read more about death reflection and creativity">Read More -&gt;</a>
+          </article>
 
-<style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f4f6f8;
-    color: #333;
-  }
-
-  /* NAVIGATION BAR */
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #818B7E;
-    padding: 1rem 2rem;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    flex-wrap: wrap;
-  }
-
-  .navbar .name {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-
-  .navbar .name a,
-  .navbar a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .navbar .name a:hover,
-  .navbar a:hover {
-    text-decoration: underline;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-  }
-
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-  }
-
-  .hamburger span {
-    height: 3px;
-    width: 25px;
-    background: white;
-    margin: 4px 0;
-    transition: 0.3s;
-  }
-
-  /* SECTION STRUCTURE */
-  .section {
-    width: 100%;
-    padding: 3rem 0;
-  }
-
-  .section-content {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-
-  /* PROFILE SECTION */
-  .profile-section {
-    background: #818B7E;
-    color: white;
-  }
-
-  .profile-content {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-
-  .left {
-    flex: 1 1 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-  }
-
-  .left img {
-    width: 80%;
-    max-width: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  }
-
-  .right {
-    flex: 2 1 400px;
-    padding: 2rem 3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .right h1 {
-    margin: 0;
-    font-size: 2.4rem;
-    font-weight: 700;
-  }
-
-  .title {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 2rem;
-    line-height: 1.4;
-  }
-
-  hr {
-    margin: 1rem 0 1.5rem;
-    border: none;
-    border-top: 2px solid #FFFFFF;
-    width: 210px;
-  }
-
-  .social-links {
-    display: flex;
-    gap: 1.5rem;
-  }
-
-  .social-links a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    background: white;
-    border-radius: 50%;
-    box-shadow: 0 0 6px rgba(0,0,0,0.1);
-    transition: background 0.3s ease;
-    text-decoration: none;
-  }
-
-  .social-links a:hover {
-    background: #e0e0e0;
-  }
-
-  .social-links img {
-    width: 24px;
-    height: 24px;
-  }
-
-  /* SECTION HEADERS */
-  .section h2 {
-    font-size: 2rem;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  /* COLUMN SECTIONS */
-  .columns-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: space-between;
-  }
-
-  .column-item {
-    flex: 1 1 300px;
-    background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .column-item img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 1rem;
-    border-radius: 6px;
-    object-fit: cover;
-  }
-
-  /* TEACHING */
-  .teaching-item h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .teaching-item a {
-    color: #333;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .teaching-item a:hover {
-    text-decoration: underline;
-  }
-
-  /* ABOUT IMAGE */
-  #about img {
-    max-width: 300px;
-    width: 100%;
-    float: right;
-    margin: 0 1.5rem 1rem 0;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-
-  #about .section-content {
-    overflow: auto;
-  }
-
-  /* CONTACT SECTION */
-  #contact {
-    background-color: #818B7E;
-    color: #F5F5F5;
-    padding: 3rem 0;
-  }
-
-  #contact h2 {
-    max-width: 1000px;
-    margin: 0 auto 2rem auto;
-    padding: 0 1.5rem;
-  }
-
-  #contact .contact-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    align-items: center;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-
-  #contact .contact-container img {
-    width: 300px;
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    flex-shrink: 0;
-  }
-
-  #contact .contact-text {
-    flex: 1 1 300px;
-    min-width: 250px;
-    padding-left: 1rem;
-  }
-
-  /* LINK STYLES */
-  #about,
-  #about p {
-    color: #F5F5F5;
-  }
-
-  .section a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .section a:hover,
-  .section a:focus {
-    text-decoration: underline;
-  }
-
-  /* RESPONSIVE STYLES */
-  @media (max-width: 768px) {
-    .hamburger {
-      display: flex;
-    }
-
-    .nav-links {
-      display: none;
-      flex-direction: column;
-      width: 100%;
-      padding-top: 1rem;
-    }
-
-    .nav-links.active {
-      display: flex;
-    }
-
-    .navbar a {
-      margin: 0.5rem 0;
-    }
-
-    .profile-content {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    .left,
-    .right {
-      width: 100%;
-      padding: 1.5rem 1rem;
-    }
-
-    .left img {
-      width: 80%;
-      max-width: 200px;
-    }
-
-    hr {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .social-links {
-      justify-content: center;
-    }
-
-    #about img {
-      float: none;
-      display: block;
-      margin: 0 auto 1rem auto;
-    }
-
-    #contact .contact-container {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #contact .contact-text {
-      text-align: center;
-      padding-left: 0;
-    }
-
-    #contact .contact-container img {
-      width: 80%;
-      max-width: 300px;
-      margin-bottom: 1rem;
-    }
-
-    .columns-container {
-      flex-direction: column;
-    }
-
-    .column-item {
-      width: 100%;
-    }
-  }
-</style>
-</head>
-
-<script>
-  function toggleMenu() {
-    document.getElementById("navLinks").classList.toggle("active");
-  }
-</script>
-
-<body>
-
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="name"><a href="#profile">Jason Kautz</a></div>
-    <div class="hamburger" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <div class="nav-links" id="navLinks">
-      <a href="Kautz - CV 2026.pdf" target="_blank">CV</a>
-      <a href="#publications">Selected Publications</a>
-      <a href="#work">Selected Working Papers</a>
-      <!-- <a href="#teaching">Teaching Materials</a> -->
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-
-  <!-- Profile Section -->
-  <section class="profile-section" id="profile">
-    <div class="profile-content">
-      <div class="left">
-        <img src="photo_headshot.jpg" alt="Jason Kautz Headshot" />
-      </div>
-      <div class="right">
-        <h1>Jason Kautz</h1>
-        <hr />
-        <div class="title">Assistant Professor of Organizational Behavior and Human Resource Management</div>
-        <div class="social-links">
-          <a href="Kautz - CV 2026.pdf" target="_blank" title="CV">
-            <img src="CV Icon.png" alt="CV" />
-          </a>
-          <a href="mailto:jdkautz4@gmail.com" title="Email">
-            <img src="envelope.png" alt="Email" />
-          </a>
-          <a href="https://www.linkedin.com/in/jason-kautz-04942149/" target="_blank" title="LinkedIn">
-            <img src="linked_in.png" alt="LinkedIn" />
-          </a>
-          <a href="https://scholar.google.com/citations?user=QBcj8sAAAAAJ&hl=en&oi=ao" target="_blank" title="Google Scholar">
-            <img src="g_scholar.png" alt="Google Scholar" />
-          </a>
+          <article class="card">
+            <img src="photo_pub_soldiersupport.jpg" alt="Publication image for combat exposure and alcohol use disorder study" width="500" height="334" loading="lazy" />
+            <h3>Interactive Effects of Genetic Liability and Combat Exposure on Risk of Alcohol Use Disorder Among US Service Members</h3>
+            <p class="card-meta"><em>Drug and Alcohol Dependence</em></p>
+            <p>Integrating information on genetic predisposition for alcohol use disorder with service members' history and combat exposure, we found that the effect of combat exposure on problematic alcohol consumption varies in part due to genetic vulnerability. This work helps inform more precise preventative support for service members.</p>
+            <a class="card-link" href="https://doi.org/10.1016/j.drugalcdep.2024.112459" target="_blank" rel="noopener noreferrer" aria-label="Read more about combat exposure and alcohol use disorder">Read More -&gt;</a>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Selected Publications -->
-  <section class="section" id="publications" style="background-color: #F5F5F5;">
-    <div class="section-content">
-      <h2>Selected Publications</h2>
-      <div class="columns-container">
-        <div class="column-item">
-          <img src="Image_Deviance_Profilies.png" alt="Deviance Profiles" />
-          <p><strong>A person-centered approach to behaving badly at work: An examination of workplace deviance patterns</strong></p>
-	  <p><em>Journal of Applied Psychology</em></p>
-          <p>This manuscript challenges traditional views of workplace deviance by using a person-centered approach to uncover distinct patterns of deviant behavior at work. Across two large studies, the authors identify five unique classes of employees based on how they engage in harmful behaviors, and show that these classes are associated with different personality traits, experiences of unfairness, and workplace outcomes. The findings offer a more nuanced understanding of why and how people behave badly at work, moving beyond simple categories like “interpersonal” or “organizational” deviance.</p>
-          <a href="https://doi.org/10.1037/apl0001192" target="_blank">Read More -></a>
-        </div>
-        <div class="column-item">
-          <img src="Image_CEO_Benevolence.png" alt="CEO Benevolence" />
-          <h3>Caring for Their Own: How Firm Actions to Protect Essential Workers and CEO Benevolence Influenced Stakeholder Sentiment During the COVID-19 Pandemic</h3>
-	  <p><em>Journal of Applied Psychology</em></p>
-          <p>At the onset of the COVID-19 pandemic, firms varied considerably in the degree to which they took action to protect their employees’ safety and financial well-being, and stakeholders took notice. Our longitudinal analysis of positive stakeholder sentiment expressed on social media demonstrated the importance of immediate firm action. Specifically, firm compensation actions were associated with a growth in positive sentiment, particularly when made by CEOs with high benevolence, whereas firm safety actions led to growth in positive sentiment but only when made by CEOs with low benevolence.</p>
-          <a href="https://doi.org/10.1037/apl0000928" target="_blank">Read More -></a>
-        </div>
-        <div class="column-item">
-          <img src="Image_Death.png" alt="Death Reflection" />
-          <h3>Reflecting on Death Amidst COVID-19 and Individual Creativity</h3>
-	  <p><em>Journal of Applied Psychology</em></p>
-          <p>Death awareness was a very real experience during the initial peak of the COVID-19 pandemic, and it brought unexpected consequences. This paper investigates the impact of death awareness on creativity in the workplace. Using weekly panel data, we found that death reflection (thinking deeply about mortality) was positively linked to creativity, while death anxiety (fear/worry over one's mortality) had no statistically significant effect. The study highlights how even during crisis periods, certain types of reflection can lead to positive psychological and behavioral outcomes.</p>
-          <a href="https://doi.org/10.1037/apl0000949" target="_blank">Read More -></a>
-        </div>
-        <div class="column-item">
-          <img src="photo_pub_soldiersupport.jpg" alt="Alcohol Use" />
-          <h3>Interactive Effects of Genetic Liability and Combat Exposure on Risk of Alcohol Use Disorder Among US Service Members</h3>
-	  <p><em>Drug and Alcohol Dependence</em></p>
-          <p>Integrating information on genetic predisposition for alcohol use disorder (i.e., polygenic risk scores) with information on service members history and combat exposure, we found that the effect of combat exposure on problematic alcohol consumption varies in part due to the influence of genetic vulnerability. This work exemplifies the importance of understanding “Environment X Genetic” effects and provides a framework to help enhance preventative efforts by enabling more precise targeting of aid to soldiers.</p>
-          <a href="https://doi.org/10.1016/j.drugalcdep.2024.112459" target="_blank">Read More -></a>
-        </div>
-      </div>
-    </div>
-  </section>
+    <section class="section working-papers-section" id="work">
+      <div class="section-content">
+        <h2>Selected Working Papers</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>[TITLE REDACTED]</h3>
+            <p>The title is redacted to preserve the blind review process. This manuscript examines dynamic trust as a historically contextualized process, showing that changes in trust do not automatically reduce employee strain. Instead, the benefits of increasing trust depend on whether employees experience the organization as coherent enough for positive trust trajectories to become psychologically meaningful.</p>
+            <p class="card-meta">Under review at: <em>Academy of Management Journal</em></p>
+          </article>
 
-  <!-- Working Papers -->
-  <section class="section" id="work" style="background-color: #EAE6E1;">
-    <div class="section-content">
-      <h2>Selected Working Papers</h2>
-      <div class="columns-container">
-        <div class="column-item">
-          <h3>[TITLE REDACTED]</h3>
-          <p>The title is redacted to preserve the blind review process. This manuscript examines dynamic trust as a historically contextualized process, showing that changes in trust do not automatically reduce employee strain. Instead, the benefits of increasing trust depend on whether employees experience the organization as coherent enough for positive trust trajectories to become psychologically meaningful.</p>
-          <p>Under review at: <em>Academy of Management Journal</em></p>
-        </div>
-        <div class="column-item">
-          <h3>A Theory of Discontinuous Positive Change in Trust Development: The Role of Critical Trust Events</h3>
-          <p>This manuscript challenges the common assumption that trust grows slowly but can collapse quickly. We argue that some positive relational moments, called <em>trust accelerators</em>, provide unusually diagnostic information about a partner's character and can rapidly anchor trust. The paper develops a theory of how high-stakes, positive trust events reshape the trajectory of interpersonal trust development.</p>
-          <p>Finalizing for submission to: <em>Personnel Psychology</em></p>
-        </div>
-        <div class="column-item">
-          <h3>A Social Influence Theory of Social Undermining</h3>
-          <p>This manuscript reframes social undermining as a social influence process that works through the perceptions and reactions of third-party witnesses. Integrating social influence and emotion theories, the paper examines when witnesses accept or reject the underminer's influence and how emotions such as contempt, anger, and fear shape subsequent perceptions and behaviors toward both the victim and the underminer.</p>
-          <p>Finalizing for submission to: <em>Journal of Applied Psychology</em></p>
-        </div>
-        <div class="column-item">
-          <h3>Bayesian Model-Average Meta-Analysis in Organizational Research</h3>
-          <p>This manuscript introduces Bayesian model-average meta-analysis as a framework for strengthening knowledge synthesis in organizational research. The paper shows how Bayesian approaches can formally incorporate prior theoretical knowledge, represent uncertainty across competing model specifications, and help scholars draw more informative conclusions from heterogeneous and incomplete bodies of evidence.</p>
-          <p>Finalizing for submission to: <em>Academy of Management Journal</em></p>
-        </div>
-      </div>
-    </div>
-  </section>
+          <article class="card">
+            <h3>A Theory of Discontinuous Positive Change in Trust Development: The Role of Critical Trust Events</h3>
+            <p>This manuscript challenges the common assumption that trust grows slowly but can collapse quickly. We argue that some positive relational moments, called <em>trust accelerators</em>, provide unusually diagnostic information about a partner's character and can rapidly anchor trust.</p>
+            <p class="card-meta">Finalizing for submission to: <em>Personnel Psychology</em></p>
+          </article>
 
-<!-- Teaching Section -->
-<!--
-<section class="section" id="teaching" style="background-color: #F5F5F5;">
-  <div class="section-content">
-    <h2>Teaching Materials</h2>
-    <p style="font-size: 17px; margin-bottom: 2rem;">
-      Below are materials I have used for short courses on methods.
-    </p>
-    <div class="columns-container">
-      <div class="column-item teaching-item">
-        <h3>Methods Blitz: Basics</h3>
-        <a href="Methods Overview BLITZ - Basics.pptx" download style="font-size: 13px;">Download Slides</a>
-      </div>
-      <div class="column-item teaching-item">
-        <h3>Methods Blitz: Scale Creation</h3>
-        <a href="Methods Overview BLITZ - Scale Creation.pptx" download style="font-size: 13px;">Download Slides</a>
-      </div>
-      <div class="column-item teaching-item">
-        <h3>Methods Blitz: Multilevel</h3>
-        <a href="Methods Overview BLITZ - Multilevel.pptx" download style="font-size: 13px;">Download Slides</a>
-      </div>
-      <div class="column-item teaching-item">
-        <h3>Methods Blitz: DGM</h3>
-        <a href="Methods Overview BLITZ - DGM.pptx" download style="font-size: 13px;">Download Slides</a>
-      </div>
-    </div>
-  </div>
-</section>
--->
-	
-  <!-- About Section -->
-  <section class="section" id="about" style="background-color: #A74D4A;">
-    <div class="section-content">
-      <h2>About Jason Kautz</h2>
-      <img src="photo_relaxing.jpg" alt="Jason Kautz Research" />
-      <p style="font-size: 17px;">I am an Assistant Professor of Organizational Behavior and Human Resource Management at the Jindal School of Management at the University of Texas at Dallas. My research is at the intersection of interpersonal dynamics, trust, and counterproductive work behaviors. I apply innovative methodologies to uncover the hidden patterns shaping how people work together or fall apart.</p>
-      <p style="font-size: 17px;">I grew up in Buffalo, New York. When I was 18, I joined the Navy and traveled the world on the aircraft carrier the USS Carl Vinson (CVN 70). Since then, I have traveled and made home in several areas.</p>
-      <p style="font-size: 17px;">In my free time, I enjoy cooking, gardening, and reading sci-fi novels. I am also newly discovering my passion for hiking and camping. When traveling, I prioritize trying out local coffee and visiting natural history museums when possible (dinosaurs rock!).</p>
-    </div>
-  </section>
+          <article class="card">
+            <h3>A Social Influence Theory of Social Undermining</h3>
+            <p>This manuscript reframes social undermining as a social influence process that works through the perceptions and reactions of third-party witnesses. Integrating social influence and emotion theories, the paper examines when witnesses accept or reject the underminer's influence.</p>
+            <p class="card-meta">Finalizing for submission to: <em>Journal of Applied Psychology</em></p>
+          </article>
 
-  <!-- Contact Section -->
-  <section class="section" id="contact" style="background-color: #818B7E">
-    <h2>Contact</h2>
-    <div class="contact-container">
-      <img src="photo_laptop.jpg" alt="Jason Kautz Contact" />
-      <div class="contact-text">
-	<p style="font-size: 2rem; font-weight: 700; text-align: center">Let's Connect!</p>
-        <p style="text-align: center">Email: <a href="mailto:jdkautz4@gmail.com">jdkautz4@gmail.com</a></p>
+          <article class="card">
+            <h3>Bayesian Model-Average Meta-Analysis in Organizational Research</h3>
+            <p>This manuscript introduces Bayesian model-average meta-analysis as a framework for strengthening knowledge synthesis in organizational research. The paper shows how Bayesian approaches can incorporate prior theoretical knowledge, represent uncertainty, and support stronger cumulative inference.</p>
+            <p class="card-meta">Finalizing for submission to: <em>Academy of Management Journal</em></p>
+          </article>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer style="text-align: center; padding: 2em 0; border-top: 1px solid #ccc; margin-top: 4em;">
-    <div class="social-links" style="display: flex; justify-content: center; gap: 1em; margin-bottom: 1em;">
-      <a href="Kautz - CV 2026.pdf" target="_blank" title="CV">
-        <img src="CV Icon.png" alt="CV" />
+    <section class="section about-section" id="about">
+      <div class="section-content">
+        <h2>About Jason Kautz</h2>
+        <img src="photo_relaxing.jpg" alt="Jason Kautz outdoors" width="2082" height="2914" loading="lazy" />
+        <p>I am an Assistant Professor of Organizational Behavior and Human Resource Management at the Jindal School of Management at the University of Texas at Dallas. My research is at the intersection of interpersonal dynamics, trust, and counterproductive work behaviors. I apply innovative methodologies to uncover the hidden patterns shaping how people work together or fall apart.</p>
+        <p>I grew up in Buffalo, New York. When I was 18, I joined the Navy and traveled the world on the aircraft carrier the USS Carl Vinson (CVN 70). Since then, I have traveled and made home in several areas.</p>
+        <p>In my free time, I enjoy cooking, gardening, and reading sci-fi novels. I am also newly discovering my passion for hiking and camping. When traveling, I prioritize trying out local coffee and visiting natural history museums when possible (dinosaurs rock!).</p>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="section-content">
+        <h2>Contact</h2>
+      </div>
+      <div class="contact-container">
+        <img src="photo_laptop.jpg" alt="Jason Kautz working on a laptop" width="2234" height="3129" loading="lazy" />
+        <div class="contact-text">
+          <p class="contact-heading">Let's Connect!</p>
+          <p>Email: <a href="mailto:jdkautz4@gmail.com">jdkautz4@gmail.com</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="social-links" aria-label="Footer professional links">
+      <a href="Kautz - CV 2026.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open CV">
+        <img src="CV Icon.png" alt="" width="216" height="216" loading="lazy" />
       </a>
-      <a href="mailto:jdkautz4@gmail.com" title="Email">
-        <img src="envelope.png" alt="Email" />
+      <a href="mailto:jdkautz4@gmail.com" aria-label="Email Jason Kautz">
+        <img src="envelope.png" alt="" width="216" height="216" loading="lazy" />
       </a>
-      <a href="https://www.linkedin.com/in/jason-kautz-04942149/" target="_blank" title="LinkedIn">
-        <img src="linked_in.png" alt="LinkedIn" />
+      <a href="https://www.linkedin.com/in/jason-kautz-04942149/" target="_blank" rel="noopener noreferrer" aria-label="Open LinkedIn profile">
+        <img src="linked_in.png" alt="" width="216" height="216" loading="lazy" />
       </a>
-      <a href="https://scholar.google.com/citations?user=QBcj8sAAAAAJ&hl=en&oi=ao" target="_blank" title="Google Scholar">
-        <img src="g_scholar.png" alt="Google Scholar" />
+      <a href="https://scholar.google.com/citations?user=QBcj8sAAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer" aria-label="Open Google Scholar profile">
+        <img src="g_scholar.png" alt="" width="216" height="216" loading="lazy" />
       </a>
-    </div>  <p style="font-size: 0.9em; color: #777;">&copy; 2025 Jason Kautz</p>
+    </div>
+    <p class="copyright">&copy; 2026 Jason Kautz</p>
   </footer>
 
+  <script>
+    const navToggle = document.querySelector(".nav-toggle");
+    const navLinks = document.getElementById("navLinks");
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("active");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("active");
+        navToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
 </body>
 </html>
