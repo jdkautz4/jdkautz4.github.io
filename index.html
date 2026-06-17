@@ -6,6 +6,12 @@
   <title>Jason Kautz - Assistant Professor</title>
 
 <style>
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -54,6 +60,9 @@
     display: none;
     flex-direction: column;
     cursor: pointer;
+    border: 0;
+    background: transparent;
+    padding: 0;
   }
 
   .hamburger span {
@@ -360,25 +369,19 @@
 </style>
 </head>
 
-<script>
-  function toggleMenu() {
-    document.getElementById("navLinks").classList.toggle("active");
-  }
-</script>
-
 <body>
 
   <!-- Navigation -->
   <nav class="navbar">
     <div class="name"><a href="#profile">Jason Kautz</a></div>
-    <div class="hamburger" onclick="toggleMenu()">
+    <button class="hamburger" type="button" onclick="toggleMenu()" aria-label="Open navigation menu">
       <span></span>
       <span></span>
       <span></span>
-    </div>
+    </button>
 
     <div class="nav-links" id="navLinks">
-      <a href="Kautz - CV 2026.pdf" target="_blank">CV</a>
+      <a href="Kautz - CV 2026.pdf" target="_blank" rel="noopener noreferrer">CV</a>
       <a href="#publications">Selected Publications</a>
       <a href="#work">Selected Working Papers</a>
       <!-- <a href="#teaching">Teaching Materials</a> -->
@@ -398,16 +401,16 @@
         <hr />
         <div class="title">Assistant Professor of Organizational Behavior and Human Resource Management</div>
         <div class="social-links">
-          <a href="Kautz - CV 2026.pdf" target="_blank" title="CV">
+          <a href="Kautz - CV 2026.pdf" target="_blank" rel="noopener noreferrer" title="CV">
             <img src="CV Icon.png" alt="CV" />
           </a>
           <a href="mailto:jdkautz4@gmail.com" title="Email">
             <img src="envelope.png" alt="Email" />
           </a>
-          <a href="https://www.linkedin.com/in/jason-kautz-04942149/" target="_blank" title="LinkedIn">
+          <a href="https://www.linkedin.com/in/jason-kautz-04942149/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
             <img src="linked_in.png" alt="LinkedIn" />
           </a>
-          <a href="https://scholar.google.com/citations?user=QBcj8sAAAAAJ&hl=en&oi=ao" target="_blank" title="Google Scholar">
+          <a href="https://scholar.google.com/citations?user=QBcj8sAAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer" title="Google Scholar">
             <img src="g_scholar.png" alt="Google Scholar" />
           </a>
         </div>
@@ -421,32 +424,32 @@
       <h2>Selected Publications</h2>
       <div class="columns-container">
         <div class="column-item">
-          <img src="Image_Deviance_Profilies.png" alt="Deviance Profiles" />
+          <img src="Image_Deviance_Profiles.png" alt="Deviance Profiles" />
           <h3>A person-centered approach to behaving badly at work: An examination of workplace deviance patterns</h3>
 	  <p><em>Journal of Applied Psychology</em></p>
           <p>This manuscript challenges traditional views of workplace deviance by using a person-centered approach to uncover distinct patterns of deviant behavior at work. Across two large studies, the authors identify five unique classes of employees based on how they engage in harmful behaviors, and show that these classes are associated with different personality traits, experiences of unfairness, and workplace outcomes. The findings offer a more nuanced understanding of why and how people behave badly at work, moving beyond simple categories like “interpersonal” or “organizational” deviance.</p>
-          <a href="https://doi.org/10.1037/apl0001192" target="_blank">Read More -></a>
+          <a href="https://doi.org/10.1037/apl0001192" target="_blank" rel="noopener noreferrer">Read More -></a>
         </div>
         <div class="column-item">
           <img src="Image_CEO_Benevolence.png" alt="CEO Benevolence" />
           <h3>Caring for Their Own: How Firm Actions to Protect Essential Workers and CEO Benevolence Influenced Stakeholder Sentiment During the COVID-19 Pandemic</h3>
 	  <p><em>Journal of Applied Psychology</em></p>
           <p>At the onset of the COVID-19 pandemic, firms varied considerably in the degree to which they took action to protect their employees’ safety and financial well-being, and stakeholders took notice. Our longitudinal analysis of positive stakeholder sentiment expressed on social media demonstrated the importance of immediate firm action. Specifically, firm compensation actions were associated with a growth in positive sentiment, particularly when made by CEOs with high benevolence, whereas firm safety actions led to growth in positive sentiment but only when made by CEOs with low benevolence.</p>
-          <a href="https://doi.org/10.1037/apl0000928" target="_blank">Read More -></a>
+          <a href="https://doi.org/10.1037/apl0000928" target="_blank" rel="noopener noreferrer">Read More -></a>
         </div>
         <div class="column-item">
           <img src="Image_Death.png" alt="Death Reflection" />
           <h3>Reflecting on Death Amidst COVID-19 and Individual Creativity</h3>
 	  <p><em>Journal of Applied Psychology</em></p>
           <p>Death awareness was a very real experience during the initial peak of the COVID-19 pandemic, and it brought unexpected consequences. This paper investigates the impact of death awareness on creativity in the workplace. Using weekly panel data, we found that death reflection (thinking deeply about mortality) was positively linked to creativity, while death anxiety (fear/worry over one's mortality) had no statistically significant effect. The study highlights how even during crisis periods, certain types of reflection can lead to positive psychological and behavioral outcomes.</p>
-          <a href="https://doi.org/10.1037/apl0000949" target="_blank">Read More -></a>
+          <a href="https://doi.org/10.1037/apl0000949" target="_blank" rel="noopener noreferrer">Read More -></a>
         </div>
         <div class="column-item">
           <img src="photo_pub_soldiersupport.jpg" alt="Alcohol Use" />
           <h3>Interactive Effects of Genetic Liability and Combat Exposure on Risk of Alcohol Use Disorder Among US Service Members</h3>
 	  <p><em>Drug and Alcohol Dependence</em></p>
           <p>Integrating information on genetic predisposition for alcohol use disorder (i.e., polygenic risk scores) with information on service members history and combat exposure, we found that the effect of combat exposure on problematic alcohol consumption varies in part due to the influence of genetic vulnerability. This work exemplifies the importance of understanding “Environment X Genetic” effects and provides a framework to help enhance preventative efforts by enabling more precise targeting of aid to soldiers.</p>
-          <a href="https://doi.org/10.1016/j.drugalcdep.2024.112459" target="_blank">Read More -></a>
+          <a href="https://doi.org/10.1016/j.drugalcdep.2024.112459" target="_blank" rel="noopener noreferrer">Read More -></a>
         </div>
       </div>
     </div>
@@ -537,20 +540,26 @@
   <!-- Footer -->
   <footer style="text-align: center; padding: 2em 0; border-top: 1px solid #ccc; margin-top: 4em;">
     <div class="social-links" style="display: flex; justify-content: center; gap: 1em; margin-bottom: 1em;">
-      <a href="Kautz - CV 2026.pdf" target="_blank" title="CV">
+      <a href="Kautz - CV 2026.pdf" target="_blank" rel="noopener noreferrer" title="CV">
         <img src="CV Icon.png" alt="CV" />
       </a>
       <a href="mailto:jdkautz4@gmail.com" title="Email">
         <img src="envelope.png" alt="Email" />
       </a>
-      <a href="https://www.linkedin.com/in/jason-kautz-04942149/" target="_blank" title="LinkedIn">
+      <a href="https://www.linkedin.com/in/jason-kautz-04942149/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
         <img src="linked_in.png" alt="LinkedIn" />
       </a>
-      <a href="https://scholar.google.com/citations?user=QBcj8sAAAAAJ&hl=en&oi=ao" target="_blank" title="Google Scholar">
+      <a href="https://scholar.google.com/citations?user=QBcj8sAAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer" title="Google Scholar">
         <img src="g_scholar.png" alt="Google Scholar" />
       </a>
     </div>  <p style="font-size: 0.9em; color: #777;">&copy; 2026 Jason Kautz</p>
   </footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("active");
+  }
+</script>
 
 </body>
 </html>
